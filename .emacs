@@ -23,7 +23,7 @@
    '("9cd57dd6d61cdf4f6aef3102c4cc2cfc04f5884d4f40b2c90a866c9b6267f2b3" "b95f61aa5f8a54d494a219fcde9049e23e3396459a224631e1719effcb981dbd" "3c7a784b90f7abebb213869a21e84da462c26a1fda7e5bd0ffebf6ba12dbd041" "f366d4bc6d14dcac2963d45df51956b2409a15b770ec2f6d730e73ce0ca5c8a7" default))
  '(display-line-numbers t)
  '(package-selected-packages
-   '(ssh-deploy undo-tree magit compat gnu-elpa-keyring-update systemtap-mode kaolin-themes helpful latex-preview-pane auctex-latexmk pdf-tools orderless vertico auctex zenburn-theme))
+   '(drag-stuff treemacs wgrep ssh-deploy undo-tree magit compat gnu-elpa-keyring-update systemtap-mode kaolin-themes helpful latex-preview-pane auctex-latexmk pdf-tools orderless vertico auctex zenburn-theme))
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 25))
 (custom-set-faces
@@ -110,6 +110,11 @@ Include a header, as well as sub headers for Description,
 
 
 (global-undo-tree-mode)
+
+
+(require 'drag-stuff)
+(global-set-key (kbd "M-<up>") 'drag-stuff-up)
+(global-set-key (kbd "M-<down>") 'drag-stuff-down)
 
 (require 'zone)
 (zone-when-idle 300)
