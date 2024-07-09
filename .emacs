@@ -1,11 +1,118 @@
-
+;; MELPA INIT
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
-;; and `package-pinned-packages`. Most users will not need or want to do this.
-;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
 (package-initialize)
+
+;; REQUIRED PACKAGES
+
 (require 'use-package)
+(require 'zone)
+(require 'drag-stuff)
+
+;; USE PACKAGE STATEMENTS
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode)
+
+  ;; Grow and shrink the Vertico minibuffer
+  (setq vertico-resize t)
+
+  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
+  ;; (setq vertico-cycle t)
+  )
+(use-package savehist
+  :ensure t
+  :init
+  (savehist-mode))
+
+(use-package orderless
+  :ensure t
+  :init
+  ;; Configure a custom style dispatcher (see the Consult wiki)
+  ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
+  ;;       orderless-component-separator #'orderless-escapable-split-on-space)
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
+
+(setq inhibit-startup-screen t)
+(setq display-line-numbers-type t)
+(setq display-line-numbers t)
+(setq fancy-splash-image "~/doom_backup/.doom.d/splash/doom_church_emacs.png")
+(setq TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view)))
+(setq vc-follow-symlinks t)
+
+
+;; KEY BINDINGS
+(defalias 'splitvert
+   (kbd "C-x 3 C-x o C-x C-b"))
+
+(global-set-key (kbd "<f6>") 'splitvert)
+
+(global-set-key (kbd "C-x C-b") 'buffer-menu)
+(global-set-key (kbd "C-c c") 'compile)
+
+; drag-stuff
+
+(global-set-key (kbd "M-<up>") 'drag-stuff-up)
+(global-set-key (kbd "M-<down>") 'drag-stuff-down)
+
+; binding revert buffer command
+(global-set-key (kbd "C-c R") 'revert-buffer)
+
+
+;; GENERAL DISPLAY CONFIGS
+(if window-system
+    (progn (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1))
+  )
+
+(load-theme 'kaolin-aurora)
+
+(global-undo-tree-mode)
+
+(zone-when-idle 300)
+
+
+;(require 'auctex-latexmk)
+;(auctex-latexmk-setup)
+;(setq TeX-source-correlate-mode t)
+;(setq auctex-latexmk-inherit-TeX-PDF-mode t)
+;(latex-preview-pane-enable)
+
+
+
+;; CUSTOM FUNCTIONS
+
+; CS330 proof macro
+(defun latex-insert-alg-proof ()
+  "Inserts a solution format for and algorithm description.
+Include a header, as well as sub headers for Description,
+ Complexity, I/O, and Proof of Correctness"
+  (interactive)
+  (push-mark)
+  (insert "\\subsubsection*{Analysis}\n\\paragraph*{Input/Output}\n\\paragraph*{Description}\n\\paragraph*{Proof of Correctness}\n\\paragraph*{Complexity}")
+  (indent-region (mark) (point))
+  (pop-mark)
+  )
+
+; Opens emacs config file. assumes file is in default ~/.emacs location
+(defun open-config ()
+  "opens the file and brings up the buffer for .emacs"
+  (interactive)
+  (progn (find-file "~/.emacs")))
+(use-package kaolin-themes
+  :ensure t
+  :init
+  )
+
+
+
+
+;; CUSTOMIZE SHENANS (EW)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -32,90 +139,3 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-(setq display-line-numbers-type t)
-(setq display-line-numbers t)
-
-(setq TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view)))
-
-(defalias 'splitvert
-   (kbd "C-x 3 C-x o C-x C-b"))
-(global-set-key (kbd "<f6>") 'splitvert)
-(global-set-key (kbd "C-x C-b") 'buffer-menu)
-(setq fancy-splash-image "~/doom_backup/.doom.d/splash/doom_church_emacs.png")
-(use-package vertico
-  :ensure t
-  :init
-  (vertico-mode)
-
-  ;; Different scroll margin
-  ;; (setq vertico-scroll-margin 0)
-
-  ;; Show more candidates
-  ;; (setq vertico-count 20)
-
-  ;; Grow and shrink the Vertico minibuffer
-  (setq vertico-resize t)
-
-  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  ;; (setq vertico-cycle t)
-  )
-(use-package savehist
-  :ensure t
-  :init
-  (savehist-mode))
-(use-package orderless
-  :ensure t
-  :init
-  ;; Configure a custom style dispatcher (see the Consult wiki)
-  ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
-  ;;       orderless-component-separator #'orderless-escapable-split-on-space)
-  (setq completion-styles '(orderless basic)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles partial-completion)))))
-(if window-system
-    (progn (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (scroll-bar-mode -1))
-  )
-(setq inhibit-startup-screen t)
-;(require 'auctex-latexmk)
-;(auctex-latexmk-setup)
-;(setq TeX-source-correlate-mode t)
-;(setq auctex-latexmk-inherit-TeX-PDF-mode t)
-;(latex-preview-pane-enable)
-(setq vc-follow-symlinks t)
-(global-set-key (kbd "C-c c") 'compile)
-
-
-(defun latex-insert-alg-proof ()
-  "Inserts a solution format for and algorithm description.
-Include a header, as well as sub headers for Description,
- Complexity, I/O, and Proof of Correctness"
-  (interactive)
-  (push-mark)
-  (insert "\\subsubsection*{Analysis}\n\\paragraph*{Input/Output}\n\\paragraph*{Description}\n\\paragraph*{Proof of Correctness}\n\\paragraph*{Complexity}")
-  (indent-region (mark) (point))
-  (pop-mark)
-  )
-
-(defun open-config ()
-  "opens the file and brings up the buffer for .emacs"
-  (interactive)
-  (progn (find-file "~/.emacs")))
-(use-package kaolin-themes
-  :ensure t
-  :init
-  )
-(load-theme 'kaolin-aurora)
-
-
-(global-undo-tree-mode)
-
-
-(require 'drag-stuff)
-(global-set-key (kbd "M-<up>") 'drag-stuff-up)
-(global-set-key (kbd "M-<down>") 'drag-stuff-down)
-
-(require 'zone)
-(zone-when-idle 300)
-
