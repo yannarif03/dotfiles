@@ -1,14 +1,21 @@
 ;; MELPA INIT
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-
+;(package-refresh-contents)
 (package-initialize)
+
+;;; If gpg key whines and complains:
+					; (setq package-check-signature nil)
+					; (package-install gnu-elpa-keyring-update)
+					; (package-refresh-contents)
+					; (setq package-check-signature 'allow-unsigned)
 
 ;; REQUIRED PACKAGES
 
 (require 'use-package)
 (require 'zone)
 (require 'drag-stuff)
+
 
 ;; USE PACKAGE STATEMENTS
 (use-package vertico
