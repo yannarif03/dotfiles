@@ -1,3 +1,31 @@
+;; CUSTOMIZE SHENANS (EW)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(TeX-view-program-selection
+   '(((output-dvi has-no-display-manager)
+      "dvi2tty")
+     ((output-dvi style-pstricks)
+      "dvips and gv")
+     (output-dvi "xdvi")
+     (output-pdf "PDF Tools")
+     (output-html "xdg-open")))
+ '(custom-safe-themes
+   '("9cd57dd6d61cdf4f6aef3102c4cc2cfc04f5884d4f40b2c90a866c9b6267f2b3" "b95f61aa5f8a54d494a219fcde9049e23e3396459a224631e1719effcb981dbd" "3c7a784b90f7abebb213869a21e84da462c26a1fda7e5bd0ffebf6ba12dbd041" "f366d4bc6d14dcac2963d45df51956b2409a15b770ec2f6d730e73ce0ca5c8a7" default))
+ '(display-line-numbers t)
+ '(package-selected-packages
+   '(drag-stuff treemacs wgrep ssh-deploy undo-tree magit compat gnu-elpa-keyring-update systemtap-mode kaolin-themes helpful latex-preview-pane auctex-latexmk pdf-tools orderless vertico auctex zenburn-theme))
+ '(smtpmail-smtp-server "smtp.gmail.com")
+ '(smtpmail-smtp-service 25))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
 ;; MELPA INIT
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -10,12 +38,24 @@
 					; (package-refresh-contents)
 					; (setq package-check-signature 'allow-unsigned)
 
+(setq num 0)
+(setq pinit nil)
+(while  (< num (length package-selected-packages))
+  (setq package (nth num package-selected-packages))
+  (unless (package-installed-p package)
+    (unless pinit
+	(package-refresh-contents)
+	(setq pinit t)
+      )
+    (package-install package)
+    )
+  (setq num (+ num 1))
+  )
+
+
 ;; REQUIRED PACKAGES
 
-(require 'use-package)
-(require 'zone)
 (require 'drag-stuff)
-
 
 ;; USE PACKAGE STATEMENTS
 (use-package vertico
@@ -77,7 +117,7 @@
   (scroll-bar-mode -1))
   )
 
-(load-theme 'kaolin-aurora)
+
 
 (global-undo-tree-mode)
 
@@ -89,7 +129,6 @@
 ;(setq TeX-source-correlate-mode t)
 ;(setq auctex-latexmk-inherit-TeX-PDF-mode t)
 ;(latex-preview-pane-enable)
-
 
 
 ;; CUSTOM FUNCTIONS
@@ -116,33 +155,6 @@ Include a header, as well as sub headers for Description,
   :init
   )
 
+(load-theme 'kaolin-aurora)
 
 
-
-;; CUSTOMIZE SHENANS (EW)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(TeX-view-program-selection
-   '(((output-dvi has-no-display-manager)
-      "dvi2tty")
-     ((output-dvi style-pstricks)
-      "dvips and gv")
-     (output-dvi "xdvi")
-     (output-pdf "PDF Tools")
-     (output-html "xdg-open")))
- '(custom-safe-themes
-   '("9cd57dd6d61cdf4f6aef3102c4cc2cfc04f5884d4f40b2c90a866c9b6267f2b3" "b95f61aa5f8a54d494a219fcde9049e23e3396459a224631e1719effcb981dbd" "3c7a784b90f7abebb213869a21e84da462c26a1fda7e5bd0ffebf6ba12dbd041" "f366d4bc6d14dcac2963d45df51956b2409a15b770ec2f6d730e73ce0ca5c8a7" default))
- '(display-line-numbers t)
- '(package-selected-packages
-   '(drag-stuff treemacs wgrep ssh-deploy undo-tree magit compat gnu-elpa-keyring-update systemtap-mode kaolin-themes helpful latex-preview-pane auctex-latexmk pdf-tools orderless vertico auctex zenburn-theme))
- '(smtpmail-smtp-server "smtp.gmail.com")
- '(smtpmail-smtp-service 25))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
